@@ -1,4 +1,4 @@
-package excelProjectTestbed;
+package individualELW11D2;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
@@ -7,12 +7,13 @@ import java.io.IOException;
 import java.util.Iterator;
 
 public class ExcelReader {
-    public static final String SAMPLE_XLSX_FILE_PATH = "sample-xlsx-file.xlsx";
+    public static final String INDIVIDUAL_EFFORT_LOGGER_PATH = "INDIVIDUAL EFFORT LOGGER.xlsx";
 
     public static void main(String[] args) throws IOException, InvalidFormatException {
 
         // Creating a Workbook from an Excel file (.xls or .xlsx)
-        Workbook workbook = WorkbookFactory.create(new File(SAMPLE_XLSX_FILE_PATH));
+        Workbook workbook = WorkbookFactory.create(new File(INDIVIDUAL_EFFORT_LOGGER_PATH));
+        System.out.println("Individual Effort Logger");
 
         // Retrieving the number of sheets in the Workbook
         System.out.println("Workbook has " + workbook.getNumberOfSheets() + " Sheets : ");
@@ -25,23 +26,19 @@ public class ExcelReader {
 
         // 1. You can obtain a sheetIterator and iterate over it
         Iterator<Sheet> sheetIterator = workbook.sheetIterator();
-        System.out.println("Retrieving Sheets using Iterator");
+        System.out.println("Worksheet names with no. of rows and no. of columns");
         while (sheetIterator.hasNext()) {
             Sheet sheet = sheetIterator.next();
             System.out.println("=> " + sheet.getSheetName());
+            
+            int rowNum = sheet.getLastRowNum()+1;  
+            System.out.println("_The '" + sheet.getSheetName() + "' sheet contains rows = " + rowNum ); 
+            
+            int noOfColumns = sheet.getRow(0).getPhysicalNumberOfCells();
+            System.out.println( "_The '" + sheet.getSheetName() + "' sheet contains columns = " + noOfColumns);
+           
+            
         }
-
-        // 2. Or you can use a for-each loop
-        System.out.println("Retrieving Sheets using for-each loop");
-        for(Sheet sheet: workbook) {
-            System.out.println("=> " + sheet.getSheetName());
-        }
-
-        // 3. Or you can use a Java 8 forEach with lambda
-        System.out.println("Retrieving Sheets using Java 8 forEach with lambda");
-        workbook.forEach(sheet -> {
-            System.out.println("=> " + sheet.getSheetName());
-        });
 
         /*
            ==================================================================
@@ -91,6 +88,7 @@ public class ExcelReader {
             });
             System.out.println();
         });
+        
 
         // Closing the workbook
         workbook.close();
